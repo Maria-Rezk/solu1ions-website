@@ -1,0 +1,39 @@
+/* ============================================================
+   ADB FIXO — primary brand display face.
+   The licensed brand font, self-hosted per the brand owner's
+   confirmation that the licence permits web embedding.
+   Subset to the weights the design uses (Medium 500, Bold 700,
+   each with its italic). Elements set at 600 resolve up to 700.
+   ============================================================ */
+
+@font-face {
+  font-family: 'ADB Fixo';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/ADBFixo-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'ADB Fixo';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/ADBFixo-Bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'ADB Fixo';
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/ADBFixo-MediumItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'ADB Fixo';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/ADBFixo-BoldItalic.woff2') format('woff2');
+}

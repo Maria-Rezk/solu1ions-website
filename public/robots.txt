@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://solu1ions.com/sitemap.xml
