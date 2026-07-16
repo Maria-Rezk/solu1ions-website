@@ -21,7 +21,7 @@ export function Reveal({ children, className, variant = 'fade', delay = 0, y = 4
     if (!el || reduced) return;
 
     const ctx = gsap.context(() => {
-      const trigger = { trigger: el, start: 'top 86%', once: true } as const;
+      const trigger = { trigger: el, start: 'top 82%', once: true } as const;
       if (variant === 'wipe') {
         gsap.fromTo(
           el,

@@ -4,12 +4,11 @@ import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
 import { useIsTouch } from '../../hooks/useIsTouch';
 
 /**
- * Custom cursor: magenta dot + trailing ring. Elements opt into the large
- * labelled state with `data-cursor="View"`. Disabled on touch devices and
- * when the user prefers reduced motion (native cursor is restored).
+ * Custom cursor: chrome Solu1ions mark + trailing labelled ring. Disabled on
+ * touch devices and when the user prefers reduced motion.
  */
 export function Cursor() {
-  const dotRef = useRef<HTMLDivElement>(null);
+  const markRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const [label, setLabel] = useState('');
   const [active, setActive] = useState(false);
@@ -24,13 +23,13 @@ export function Cursor() {
     }
     document.documentElement.classList.add('has-cursor');
 
-    const dot = dotRef.current;
+    const mark = markRef.current;
     const ring = ringRef.current;
-    if (!dot || !ring) return;
+    if (!mark || !ring) return;
 
-    gsap.set([dot, ring], { autoAlpha: 0 });
-    const dotX = gsap.quickTo(dot, 'x', { duration: 0.12, ease: 'power2.out' });
-    const dotY = gsap.quickTo(dot, 'y', { duration: 0.12, ease: 'power2.out' });
+    gsap.set([mark, ring], { autoAlpha: 0 });
+    const markX = gsap.quickTo(mark, 'x', { duration: 0.1, ease: 'power2.out' });
+    const markY = gsap.quickTo(mark, 'y', { duration: 0.1, ease: 'power2.out' });
     const ringX = gsap.quickTo(ring, 'x', { duration: 0.45, ease: 'power3.out' });
     const ringY = gsap.quickTo(ring, 'y', { duration: 0.45, ease: 'power3.out' });
 
@@ -38,10 +37,10 @@ export function Cursor() {
     const onMove = (e: MouseEvent) => {
       if (!shown) {
         shown = true;
-        gsap.to([dot, ring], { autoAlpha: 1, duration: 0.3 });
+        gsap.to([mark, ring], { autoAlpha: 1, duration: 0.3 });
       }
-      dotX(e.clientX);
-      dotY(e.clientY);
+      markX(e.clientX);
+      markY(e.clientY);
       ringX(e.clientX);
       ringY(e.clientY);
     };
@@ -77,7 +76,7 @@ export function Cursor() {
       <div ref={ringRef} className={`cursor-ring ${active ? 'is-active' : ''}`} aria-hidden="true">
         <span>{label}</span>
       </div>
-      <div ref={dotRef} className="cursor-dot" aria-hidden="true" />
+      <div ref={markRef} className={`cursor-mark ${active ? 'is-active' : ''}`} aria-hidden="true" />
     </>
   );
 }

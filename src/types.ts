@@ -17,7 +17,7 @@ export interface ServiceCategory {
   title: [string, string];
   description: string;
   services: string[];
-  media: { src: string; alt: string; contain?: boolean };
+  media: { src: string; alt: string; contain?: boolean; treatment?: 'cursor-mark' };
   tone: 'dark' | 'light';
 }
 

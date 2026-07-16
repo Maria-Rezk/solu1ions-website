@@ -1,12 +1,12 @@
 import type { ValueItem } from '../types';
 
-/** Brand values — wording from the Solu1ions Brand Guidelines. */
+/** Brand values - wording from the Solu1ions Brand Guidelines. */
 export const VALUES: ValueItem[] = [
   {
     index: '01',
     name: 'Altruism',
     belief:
-      'We believe in writing stories of success by selling solutions, not services — and by investing in people.',
+      'We believe in writing stories of success by selling solutions, not services - and by investing in people.',
   },
   {
     index: '02',
@@ -39,4 +39,4 @@ export const VISION =
   'To encourage a world of limitless innovation through creating solutions for every problem.';
 
 export const MISSION =
-  'Comprehensive business development, consultation, solutions, and innovative services — for individuals, startups, companies, NGOs, and corporates.';
+  'Comprehensive business development, consultation, solutions, and innovative services - for individuals, startups, companies, NGOs, and corporates.';

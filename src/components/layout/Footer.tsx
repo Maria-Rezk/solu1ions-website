@@ -1,8 +1,9 @@
-import type { MouseEvent } from 'react';
+import { useRef, type MouseEvent } from 'react';
 import { Magnetic } from '../motion/Magnetic';
 import { ParallaxMedia } from '../motion/ParallaxMedia';
 import { Logo } from './Logo';
 import { scrollToId } from '../../lib/scroll';
+import { useCurvedReveal } from '../../hooks/useCurvedReveal';
 import { NAV_ITEMS, SOCIALS, SITE } from '../../data/site';
 import { SERVICE_CATEGORIES } from '../../data/services';
 import glassMark from '../../assets/mark-glass.webp';
@@ -14,6 +15,8 @@ import glassMark from '../../assets/mark-glass.webp';
  */
 export function Footer() {
   const year = new Date().getFullYear();
+  const ref = useRef<HTMLElement>(null);
+  useCurvedReveal(ref, { radius: 96 });
 
   const go = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
@@ -21,14 +24,14 @@ export function Footer() {
   };
 
   return (
-    <footer className="footer" aria-label="Footer">
+    <footer ref={ref} className="footer" aria-label="Footer">
       <div className="footer__watermark" aria-hidden="true">
         <ParallaxMedia src={glassMark} alt="" speed={7} className="footer__watermark-media" />
       </div>
 
       <div className="container footer__inner">
         <div className="footer__brand">
-          <a href="#home" className="footer__logo" onClick={(e) => go(e, '#home')} aria-label="Solu1ions — back to top">
+          <a href="#home" className="footer__logo" onClick={(e) => go(e, '#home')} aria-label="Solu1ions â€” back to top">
             <Logo variant="wordmark" className="footer__logo-mark" title="" />
           </a>
           <p className="footer__tagline t-display">
@@ -82,7 +85,7 @@ export function Footer() {
 
       <div className="container footer__bottom">
         <p className="t-muted">
-          © {year} {SITE.legalName}. All rights reserved.
+          آ© {year} {SITE.legalName}. All rights reserved.
         </p>
         <p className="t-muted footer__made">Made in Damascus.</p>
         <Magnetic strength={0.4}>
@@ -93,7 +96,7 @@ export function Footer() {
             aria-label="Back to top"
             data-cursor="Top"
           >
-            ↑
+            â†‘
           </button>
         </Magnetic>
       </div>

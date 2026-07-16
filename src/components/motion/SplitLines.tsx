@@ -60,7 +60,7 @@ export function SplitLines({
           stagger,
           scrollTrigger: immediate
             ? undefined
-            : { trigger: el, start: 'top 88%', once: true },
+            : { trigger: el, start: 'top 80%', once: true },
         },
       );
       trigger = tween.scrollTrigger ?? null;

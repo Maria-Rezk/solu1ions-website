@@ -1,13 +1,15 @@
+import { useRef } from 'react';
 import type { Project } from '../../types';
 import { SplitLines } from '../motion/SplitLines';
 import { Reveal } from '../motion/Reveal';
+import { useCurvedReveal } from '../../hooks/useCurvedReveal';
 import { PROJECTS } from '../../data/projects';
 import chromeFan from '../../assets/pattern-chrome.webp';
 
 /**
  * Branded placeholder used until real case-study media is supplied
- * (`project.media === null`). It is deliberately typographic — a tinted
- * brand surface, the chrome fan, and an honest "preview" tag — so nothing
+ * (`project.media === null`). It is deliberately typographic â€” a tinted
+ * brand surface, the chrome fan, and an honest "preview" tag â€” so nothing
  * on the page pretends to be a photograph that doesn't exist yet.
  */
 function ProjectVisual({ project, index }: { project: Project; index: number }) {
@@ -26,7 +28,7 @@ function ProjectVisual({ project, index }: { project: Project; index: number }) 
     <div className="project__placeholder" style={{ background: project.tint }} aria-hidden="true">
       <img src={chromeFan} alt="" loading="lazy" decoding="async" className="project__fan" />
       <span className="project__number t-display">{String(index + 1).padStart(2, '0')}</span>
-      <span className="project__tag t-label">Case study — media in production</span>
+      <span className="project__tag t-label">Case study â€” media in production</span>
     </div>
   );
 }
@@ -44,7 +46,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             <span className="project__year t-muted">{project.year}</span>
           </div>
           <p className="project__client">
-            {project.client} <span className="t-muted">— {project.category}</span>
+            {project.client} <span className="t-muted">â€” {project.category}</span>
           </p>
           <ul className="project__services" aria-label="Services delivered">
             {project.services.map((s) => (
@@ -59,10 +61,13 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   );
 }
 
-/** Selected work — real engagements from the studio's roster. */
+/** Selected work â€” real engagements from the studio's roster. */
 export function Work() {
+  const ref = useRef<HTMLElement>(null);
+  useCurvedReveal(ref, { radius: 96 });
+
   return (
-    <section id="work" className="section work" aria-labelledby="work-heading">
+    <section ref={ref} id="work" className="section work work--panel" aria-labelledby="work-heading">
       <div className="container">
         <div className="section-head work__head">
           <p className="eyebrow t-label">Selected work</p>

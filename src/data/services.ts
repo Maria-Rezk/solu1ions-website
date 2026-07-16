@@ -1,6 +1,5 @@
 import type { ServiceCategory } from '../types';
 import markChrome from '../assets/mark-chrome.webp';
-import patternChrome from '../assets/pattern-chrome.webp';
 import logoSketches from '../assets/logo-sketches.webp';
 import markGlass from '../assets/mark-glass.webp';
 
@@ -52,9 +51,10 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
       'SEM',
     ],
     media: {
-      src: patternChrome,
-      alt: 'The Solu1ions chrome fan element — eight blades circling a single navy one',
+      src: markChrome,
+      alt: 'The Solu1ions chrome cursor mark',
       contain: true,
+      treatment: 'cursor-mark',
     },
     tone: 'light',
   },

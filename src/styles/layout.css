@@ -1,5 +1,5 @@
 /* ============================================================
-   LAYOUT — preloader, navbar, fullscreen menu, shared motion
+   LAYOUT â€” preloader, navbar, fullscreen menu, shared motion
    primitives (marquee, parallax frame), footer
    ============================================================ */
 
@@ -376,12 +376,16 @@ html.is-loading body {
 }
 
 /* ---------------- Footer ---------------- */
+/* Curved dark panel (Tajreed `curved_true`): navy lifts over the vulcan page,
+   its top corners rounded. On desktop useCurvedReveal scrubs the radius to 0;
+   mobile / reduced-motion keep the static curve set here. */
 .footer {
   position: relative;
   overflow: hidden;
-  background: var(--c-vulcan);
-  border-top: 1px solid var(--line-on-dark);
-  padding-top: clamp(4rem, 8vw, 7rem);
+  background: var(--bg-surface);
+  border-top-left-radius: clamp(28px, 5vw, 72px);
+  border-top-right-radius: clamp(28px, 5vw, 72px);
+  padding-top: clamp(4.5rem, 8vw, 7.5rem);
 }
 
 .footer__watermark {
