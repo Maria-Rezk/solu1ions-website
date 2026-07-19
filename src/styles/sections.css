@@ -56,24 +56,44 @@
   will-change: transform;
 }
 
+/* Inline holder — no pill; the mark sits in the line like a glyph. */
 .hero__chip {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  vertical-align: baseline;
-  width: 1.5em;
-  height: 0.76em;
-  margin-left: 0.16em;
-  transform: translateY(0.08em);
-  border: 1px solid var(--line-on-dark);
-  border-radius: 0.38em;
-  background: color-mix(in srgb, var(--c-navy) 70%, var(--c-vulcan));
-  overflow: hidden;
+  display: inline-block;
+  margin-inline: 0.08em;
+  line-height: 0;
 }
 
-.hero__chip img {
-  width: 62%;
-  height: auto;
+/* Chrome Solu1ions 1T mark — identical treatment to the custom cursor
+   (chrome gradient masked by the icon vector), sized to the text. */
+.hero__chip-mark {
+  display: inline-block;
+  height: 0.86em;
+  aspect-ratio: 1751 / 1717;
+  vertical-align: -0.08em;
+  background:
+    linear-gradient(140deg, #ffffff 0%, #7f8992 34%, #f5f7f8 56%, #27303d 100%),
+    var(--c-concrete);
+  filter: drop-shadow(0 1px 0 color-mix(in srgb, var(--c-concrete) 45%, transparent));
+  -webkit-mask: url('../assets/brand/logo-icon.svg') center / contain no-repeat;
+  mask: url('../assets/brand/logo-icon.svg') center / contain no-repeat;
+  animation: hero-chip-mark 5s var(--ease-inout) infinite;
+}
+
+@keyframes hero-chip-mark {
+  0%,
+  100% {
+    transform: rotate(-4deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-2deg) translateY(-9%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__chip-mark {
+    animation: none;
+    transform: rotate(-4deg);
+  }
 }
 
 .hero__foot {
@@ -1454,8 +1474,135 @@
   pointer-events: none;
 }
 
+.services__ambient {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  contain: paint;
+}
+
+.services__gear-wrap {
+  --services-gear-size: clamp(24rem, 43vw, 54rem);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--services-gear-size);
+  aspect-ratio: 1;
+  opacity: 0.84;
+  transform: translate3d(-16%, 9%, 0);
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.services__gear-glow {
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle,
+      color-mix(in srgb, var(--c-magenta-on-blue) 34%, transparent) 0%,
+      color-mix(in srgb, var(--c-bayoux) 18%, transparent) 36%,
+      transparent 72%
+    );
+  filter: blur(clamp(24px, 4vw, 58px));
+  opacity: 0.25;
+  transform-origin: center;
+  transition:
+    opacity 0.85s var(--ease-out),
+    filter 0.85s var(--ease-out);
+}
+
+.services__gear {
+  position: absolute;
+  inset: 9%;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle,
+      transparent 0 16%,
+      color-mix(in srgb, var(--c-concrete) 28%, transparent) 16.6% 20%,
+      transparent 20.8% 35%,
+      color-mix(in srgb, var(--c-concrete) 24%, transparent) 35.6% 39%,
+      transparent 39.8% 51%,
+      color-mix(in srgb, var(--c-magenta-on-blue) 36%, transparent) 51.5% 57%,
+      transparent 58%
+    ),
+    repeating-conic-gradient(
+      from 4deg,
+      color-mix(in srgb, var(--c-concrete) 40%, var(--c-bayoux)) 0deg 7deg,
+      transparent 7deg 13deg,
+      color-mix(in srgb, var(--c-magenta-on-blue) 44%, transparent) 13deg 17deg,
+      transparent 17deg 30deg
+    );
+  opacity: 0.2;
+  filter: blur(clamp(10px, 1.15vw, 18px)) saturate(0.82);
+  -webkit-mask: radial-gradient(circle, transparent 0 14%, #000 14.8% 66%, transparent 67%);
+  mask: radial-gradient(circle, transparent 0 14%, #000 14.8% 66%, transparent 67%);
+  transform-origin: center;
+  animation: services-gear-rotate 92s linear infinite;
+  transition:
+    opacity 0.85s var(--ease-out),
+    filter 0.85s var(--ease-out);
+  will-change: transform, opacity, filter;
+}
+
+.services__gear::before,
+.services__gear::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.services__gear::before {
+  inset: 21%;
+  border: 1px solid color-mix(in srgb, var(--c-concrete) 30%, transparent);
+  box-shadow:
+    0 0 0 clamp(1.4rem, 3vw, 3.2rem) color-mix(in srgb, var(--c-concrete) 8%, transparent),
+    0 0 0 clamp(3.2rem, 6vw, 6.3rem) color-mix(in srgb, var(--c-magenta-on-blue) 8%, transparent);
+}
+
+.services__gear::after {
+  inset: 42%;
+  border: 1px solid color-mix(in srgb, var(--c-magenta-on-blue) 42%, transparent);
+  background: color-mix(in srgb, var(--c-vulcan) 18%, transparent);
+}
+
+.services__gear-wrap.is-moving .services__gear-glow {
+  opacity: 0.34;
+}
+
+/* While travelling the gear lifts slightly, then settles back on arrival. */
+.services__gear-wrap.is-moving .services__gear {
+  opacity: 0.26;
+}
+
+.services__gear-wrap.is-moving.is-softened .services__gear {
+  opacity: 0.12;
+}
+
+.services__gear-wrap.is-softened .services__gear {
+  opacity: 0.1;
+  filter: blur(clamp(18px, 2.3vw, 34px)) saturate(0.72);
+}
+
+.services__gear-wrap.is-softened .services__gear-glow {
+  opacity: 0.13;
+  filter: blur(clamp(34px, 5vw, 72px));
+}
+
+@keyframes services-gear-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .services__container {
   position: relative;
+  z-index: 1;
 }
 
 .services__shell {
@@ -1595,10 +1742,19 @@
     color-mix(in srgb, var(--c-navy) 64%, var(--c-vulcan));
   clip-path: polygon(0 0, calc(100% - 2.1rem) 0, 100% 2.1rem, 100% 100%, 2.1rem 100%, 0 calc(100% - 2.1rem));
   transition:
-    translate var(--dur-fast) var(--ease-out),
-    border-color var(--dur-fast) var(--ease-out),
-    background-color var(--dur-fast) var(--ease-out);
+    translate 0.5s var(--ease-out),
+    scale 0.5s var(--ease-out),
+    border-color 0.5s var(--ease-out),
+    background-color 0.5s var(--ease-out),
+    box-shadow 0.5s var(--ease-out);
   will-change: transform, opacity, translate;
+}
+
+.service-card.is-service-active {
+  translate: 0 -0.24rem;
+  scale: 1.008;
+  border-color: color-mix(in srgb, var(--c-magenta) 64%, var(--c-concrete));
+  box-shadow: 0 1.5rem 4.8rem color-mix(in srgb, var(--c-vulcan) 30%, transparent);
 }
 
 .service-card::before {
@@ -1647,6 +1803,7 @@
 @media (hover: hover) {
   .service-card:hover {
     translate: 0 -0.45rem;
+    scale: 1.012;
     border-color: color-mix(in srgb, var(--c-magenta) 72%, var(--c-concrete));
   }
 }
@@ -1756,6 +1913,22 @@
   transform: rotate(-10deg);
 }
 
+.service-card__visual--mark {
+  justify-self: start;
+  align-self: start;
+  width: clamp(3.4rem, 5.1vw, 5.8rem);
+  min-height: 0;
+  aspect-ratio: 1;
+  overflow: visible;
+  border: 0;
+  background: none;
+  clip-path: none;
+}
+
+.service-card__visual--mark::after {
+  display: none;
+}
+
 .service-card__img {
   position: relative;
   z-index: 1;
@@ -1774,15 +1947,15 @@
 .service-card__cursor-mark {
   position: relative;
   z-index: 1;
-  width: 62%;
-  max-width: 11.5rem;
+  width: 100%;
+  max-width: none;
   aspect-ratio: 1751 / 1717;
   background:
     linear-gradient(140deg, #ffffff 0%, #7f8992 34%, #f5f7f8 56%, #27303d 100%),
     var(--c-concrete);
   filter:
     drop-shadow(0 1px 0 color-mix(in srgb, var(--c-concrete) 52%, transparent))
-    drop-shadow(0 18px 28px color-mix(in srgb, var(--c-vulcan) 72%, transparent));
+    drop-shadow(0 10px 18px color-mix(in srgb, var(--c-vulcan) 72%, transparent));
   -webkit-mask: url('../assets/brand/logo-icon.svg') center / contain no-repeat;
   mask: url('../assets/brand/logo-icon.svg') center / contain no-repeat;
   transform: rotate(-4deg);
@@ -1817,12 +1990,67 @@
   }
 }
 
-.service-card__services {
+.service-card__services-viewport {
   position: relative;
   z-index: 1;
+  max-width: 100%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+
+.service-card__services-track {
   display: flex;
-  flex-wrap: wrap;
+  width: max-content;
+  max-width: none;
+  animation-duration: var(--service-carousel-duration, 40s);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.service-card__services-track--ltr {
+  animation-name: service-carousel-ltr;
+}
+
+.service-card__services-track--rtl {
+  animation-name: service-carousel-rtl;
+}
+
+.service-card__services {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: nowrap;
   gap: 0.55rem;
+  min-width: max-content;
+  padding-right: 0.55rem;
+}
+
+/* Only the row being read pauses — other rows keep drifting. */
+.service-card:focus-within .service-card__services-track {
+  animation-play-state: paused;
+}
+
+@media (hover: hover) {
+  .service-card:hover .service-card__services-track {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes service-carousel-rtl {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes service-carousel-ltr {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 .service-card__service {
@@ -1836,6 +2064,7 @@
   font-weight: 600;
   line-height: 1.25;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .service-card__service--more {
@@ -1878,6 +2107,45 @@
     padding-block: clamp(4rem, 12vw, 6rem);
   }
 
+  .services__gear-wrap {
+    --services-gear-size: clamp(13rem, 72vw, 25rem);
+    opacity: 0.68;
+  }
+
+  .services__gear-glow {
+    inset: 12%;
+    opacity: 0.16;
+    filter: blur(clamp(20px, 7vw, 34px));
+  }
+
+  .services__gear {
+    inset: 11%;
+    opacity: 0.14;
+    filter: blur(clamp(12px, 4vw, 22px)) saturate(0.76);
+  }
+
+  .services__gear-wrap.is-softened .services__gear {
+    opacity: 0.08;
+    filter: blur(clamp(18px, 5vw, 28px)) saturate(0.68);
+  }
+
+  .services__gear-wrap.is-softened .services__gear-glow {
+    opacity: 0.09;
+    filter: blur(clamp(24px, 8vw, 42px));
+  }
+
+  .services__gear-wrap.is-moving .services__gear {
+    opacity: 0.18;
+  }
+
+  .services__gear-wrap.is-moving.is-softened .services__gear {
+    opacity: 0.1;
+  }
+
+  .service-card__services-track {
+    animation-duration: calc(var(--service-carousel-duration, 40s) * 1.35);
+  }
+
   .services__metrics {
     grid-template-columns: 1fr;
   }
@@ -1900,6 +2168,11 @@
   .service-card {
     width: 100%;
     clip-path: polygon(0 0, calc(100% - 1.35rem) 0, 100% 1.35rem, 100% 100%, 1.35rem 100%, 0 calc(100% - 1.35rem));
+  }
+
+  .service-card.is-service-active {
+    translate: 0 -0.16rem;
+    scale: 1.004;
   }
 
   .service-card--left,
@@ -1941,8 +2214,29 @@
     min-height: 12rem;
   }
 
+  .service-card__visual--mark {
+    min-height: 0;
+    width: clamp(3rem, 16vw, 4.8rem);
+  }
+
   .service-card__cursor-mark {
-    width: 54%;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .services__gear,
+  .service-card__services-track {
+    animation: none;
+  }
+
+  .services__gear-wrap {
+    transform: translate3d(6vw, 4rem, 0);
+  }
+
+  .service-card.is-service-active {
+    translate: 0;
+    scale: 1;
   }
 }
 
@@ -2098,137 +2392,199 @@
   }
 }
 
-/* ---------------- Work ---------------- */
+/* ---------------- Work (horizontal pinned gallery) ---------------- */
 .work--panel {
+  position: relative;
   background: var(--bg-surface);
   overflow: hidden;
   border-top-left-radius: clamp(28px, 5vw, 72px);
   border-top-right-radius: clamp(28px, 5vw, 72px);
 }
 
+/* Default (mobile / reduced motion): vertical stack of cards. */
+.work__track {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.5rem, 6vw, 4rem);
+  padding: clamp(3.5rem, 8vw, 6rem) var(--gutter);
+}
+
+/* Desktop pinned mode: one row, full viewport height, scrolls sideways. */
+.work.is-pinned {
+  height: 100vh;
+}
+.work.is-pinned .work__track {
+  flex-direction: row;
+  align-items: center;
+  height: 100vh;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  /* top padding clears the fixed navbar so card tops aren't hidden */
+  padding: clamp(5.5rem, 10vh, 7.5rem) clamp(2rem, 6vw, 6rem) clamp(2rem, 5vh, 4rem);
+  will-change: transform;
+}
+
+/* Persistent section label — stays in view while the cards scroll sideways
+   so the pinned gallery is always identified. */
+.work__label {
+  display: none;
+}
+.work.is-pinned .work__label {
+  display: block;
+  position: absolute;
+  top: clamp(4.5rem, 8.5vh, 6.25rem);
+  left: var(--gutter);
+  z-index: 3;
+  color: var(--ink-on-dark-muted);
+}
+
+.work__intro {
+  flex: 0 0 auto;
+  align-self: center;
+  max-width: min(88vw, 420px);
+}
+.work.is-pinned .work__intro {
+  width: min(38vw, 420px);
+  padding-right: clamp(1rem, 3vw, 3rem);
+}
 .work__title {
   font-size: var(--fs-h1);
+  margin: 0.6rem 0 1.2rem;
 }
-
 .work__note {
-  max-width: 46ch;
+  max-width: 42ch;
+}
+.work__hint {
+  display: none;
+  margin-top: 1.6rem;
+  color: var(--accent);
+}
+.work.is-pinned .work__hint {
+  display: inline-flex;
+  gap: 0.5rem;
 }
 
-.work__grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(2rem, 4.5vw, 4rem);
-  row-gap: clamp(3rem, 6vw, 5rem);
+/* Cards */
+.wcard {
+  flex: 0 0 auto;
+}
+.work.is-pinned .wcard {
+  width: clamp(300px, 34vw, 460px);
+}
+/* Cap media height in pinned mode so media + meta fit under the navbar. */
+.work.is-pinned .wcard__media {
+  aspect-ratio: auto;
+  height: min(52vh, 460px);
 }
 
-.project--wide {
-  grid-column: 1 / -1;
-}
-
-.project__media {
+.wcard__media {
   position: relative;
   overflow: hidden;
+  border-radius: 24px;
   border: 1px solid var(--line-on-dark);
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 4 / 5;
 }
 
-.project--wide .project__media {
-  aspect-ratio: 21 / 9;
-}
-
-.project__img,
-.project__placeholder {
+.wcard__img,
+.wcard__placeholder {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   transition: transform 0.9s var(--ease-out);
 }
-
-.project__img {
+.wcard__img {
   object-fit: cover;
 }
-
-.project:hover .project__img,
-.project:hover .project__placeholder {
-  transform: scale(1.045);
+.wcard:hover .wcard__img,
+.wcard:hover .wcard__placeholder {
+  transform: scale(1.04);
 }
 
-.project__fan {
+.wcard__fan {
   position: absolute;
   right: -8%;
-  bottom: -22%;
-  width: 58%;
+  bottom: -20%;
+  width: 60%;
   opacity: 0.16;
   transition: transform 1.2s var(--ease-out);
 }
-
-.project:hover .project__fan {
+.wcard:hover .wcard__fan {
   transform: rotate(18deg);
 }
-
-.project__number {
+.wcard__number {
   position: absolute;
-  left: clamp(1rem, 2.5vw, 2rem);
-  bottom: clamp(0.5rem, 1.5vw, 1.25rem);
-  font-size: var(--fs-number);
+  left: clamp(1rem, 2.5vw, 1.75rem);
+  bottom: clamp(0.5rem, 1.5vw, 1.1rem);
+  font-size: clamp(4rem, 9vw, 8rem);
   line-height: 0.85;
   color: transparent;
   -webkit-text-stroke: 1.5px color-mix(in srgb, var(--c-concrete) 55%, transparent);
 }
-
-.project__tag {
+.wcard__ptag {
   position: absolute;
-  top: clamp(1rem, 2.5vw, 1.6rem);
-  left: clamp(1rem, 2.5vw, 2rem);
+  top: clamp(1rem, 2.5vw, 1.4rem);
+  left: clamp(1rem, 2.5vw, 1.75rem);
   padding: 0.45rem 0.8rem;
   border: 1px solid color-mix(in srgb, var(--c-concrete) 35%, transparent);
   color: var(--c-concrete);
   background: color-mix(in srgb, var(--c-vulcan) 45%, transparent);
   backdrop-filter: blur(4px);
+  border-radius: 999px;
 }
 
-.project__meta {
-  padding-top: 1.2rem;
+.wcard__meta {
+  padding-top: 1.1rem;
   display: grid;
-  gap: 0.6rem;
+  gap: 0.5rem;
 }
-
-.project__head {
+.wcard__head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
 }
-
-.project__title {
-  font-size: clamp(1.25rem, 2.2vw, 1.8rem);
+.wcard__title {
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
 }
-
-.project__client {
+.wcard__client {
   color: var(--ink-on-dark);
 }
-
-.project__services {
+.wcard__services {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-top: 0.35rem;
 }
-
-.project__chip {
-  padding: 0.4rem 0.75rem;
+.wcard__chip {
+  padding: 0.35rem 0.7rem;
   border: 1px solid var(--line-on-dark);
   color: var(--ink-on-dark-muted);
   border-radius: 999px;
 }
 
-@media (max-width: 800px) {
-  .work__grid {
-    grid-template-columns: 1fr;
-  }
+/* Horizontal scroll progress bar (pinned mode only). */
+.work__progress {
+  display: none;
+}
+.work.is-pinned .work__progress {
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--line-on-dark);
+}
+.work__progress-bar {
+  height: 100%;
+  background: var(--accent);
+  transform-origin: left center;
+  transform: scaleX(0);
+}
 
-  .project--wide .project__media {
+/* Non-pinned card media is a touch shorter for the vertical stack. */
+@media (max-width: 1023px) {
+  .wcard__media {
     aspect-ratio: 4 / 3;
   }
 }

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 640 640" role="img">
+  <!-- Solu1ions placeholder — Business Development & Consultancy.
+       Structured growth: gridded plan, ascending measures, one decisive trajectory. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0f121b"/>
+      <stop offset="0.55" stop-color="#232c44"/>
+      <stop offset="1" stop-color="#0f121b"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="640" fill="url(#bg)"/>
+
+  <!-- fine planning grid -->
+  <g stroke="#4a5d7a" stroke-width="1" opacity="0.22">
+    <path d="M128 0V640M256 0V640M384 0V640M512 0V640"/>
+    <path d="M0 128H640M0 256H640M0 384H640M0 512H640"/>
+  </g>
+
+  <!-- corner language (echoes the card's notched corners) -->
+  <path d="M560 40h40v40" fill="none" stroke="#f2f2f2" stroke-width="2" opacity="0.55"/>
+  <path d="M80 600H40v-40" fill="none" stroke="#f2f2f2" stroke-width="2" opacity="0.55"/>
+  <path d="M52 76l14-24h44l-14 24z" fill="#c9144b" opacity="0.9"/>
+
+  <!-- baseline + ticks -->
+  <path d="M96 512h448" stroke="#f2f2f2" stroke-width="2" opacity="0.6"/>
+  <g stroke="#f2f2f2" stroke-width="2" opacity="0.35">
+    <path d="M160 512v10M256 512v10M352 512v10M448 512v10"/>
+  </g>
+
+  <!-- ascending measures -->
+  <g stroke-width="2">
+    <rect x="132" y="428" width="56" height="84" fill="none" stroke="#8ea0bb" opacity="0.6"/>
+    <rect x="228" y="372" width="56" height="140" fill="none" stroke="#8ea0bb" opacity="0.7"/>
+    <rect x="324" y="300" width="56" height="212" fill="none" stroke="#f2f2f2" opacity="0.7"/>
+    <rect x="420" y="212" width="56" height="300" fill="none" stroke="#f2f2f2" opacity="0.8"/>
+    <rect x="420" y="300" width="56" height="212" fill="#c9144b" opacity="0.55"/>
+  </g>
+
+  <!-- decisive trajectory, rising like the brand arrow -->
+  <path d="M132 448 L256 396 L352 320 L472 196" fill="none" stroke="#f2f2f2" stroke-width="2.5" stroke-dasharray="10 8" opacity="0.85"/>
+  <path d="M472 196l-30 4M472 196l-6 30" stroke="#c9144b" stroke-width="3" fill="none"/>
+  <g fill="#0f121b" stroke="#f2f2f2" stroke-width="2">
+    <circle cx="132" cy="448" r="6"/>
+    <circle cx="256" cy="396" r="6"/>
+    <circle cx="352" cy="320" r="6"/>
+  </g>
+  <circle cx="472" cy="196" r="8" fill="#c9144b"/>
+
+  <!-- document / plan fragment -->
+  <g opacity="0.6">
+    <rect x="96" y="96" width="150" height="96" fill="none" stroke="#8ea0bb" stroke-width="2"/>
+    <path d="M116 122h110M116 144h84M116 166h96" stroke="#8ea0bb" stroke-width="2"/>
+  </g>
+</svg>

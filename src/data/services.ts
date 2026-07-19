@@ -1,7 +1,8 @@
 import type { ServiceCategory } from '../types';
-import markChrome from '../assets/mark-chrome.webp';
-import logoSketches from '../assets/logo-sketches.webp';
-import markGlass from '../assets/mark-glass.webp';
+import phBusinessStrategy from '../assets/placeholders/ph-business-strategy.svg';
+import phMarketingSignal from '../assets/placeholders/ph-marketing-signal.svg';
+import phCreativeCraft from '../assets/placeholders/ph-creative-craft.svg';
+import phTechInterface from '../assets/placeholders/ph-tech-interface.svg';
 
 /**
  * Service architecture per the approved brief; individual services sourced
@@ -27,9 +28,8 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
       'Microsoft Office Solutions',
     ],
     media: {
-      src: markChrome,
-      alt: 'The Solu1ions chrome logo mark — the 1T monogram with its rising arrow',
-      contain: true,
+      src: phBusinessStrategy,
+      alt: 'Placeholder illustration: ascending chart measures and a rising trajectory over a planning grid',
     },
     tone: 'dark',
   },
@@ -51,10 +51,8 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
       'SEM',
     ],
     media: {
-      src: markChrome,
-      alt: 'The Solu1ions chrome cursor mark',
-      contain: true,
-      treatment: 'cursor-mark',
+      src: phMarketingSignal,
+      alt: 'Placeholder illustration: a broadcast point radiating signal arcs toward audience nodes and message panels',
     },
     tone: 'light',
   },
@@ -76,8 +74,8 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
       'Print Design',
     ],
     media: {
-      src: logoSketches,
-      alt: 'Pencil sketches of the Solu1ions logo mark in a sketchbook',
+      src: phCreativeCraft,
+      alt: 'Placeholder illustration: a drawing board with a bezier curve, crop marks, and brand color swatches',
     },
     tone: 'dark',
   },
@@ -99,9 +97,8 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
       'Technology Solutions',
     ],
     media: {
-      src: markGlass,
-      alt: 'The Solu1ions logo mark rendered in frosted glass',
-      contain: true,
+      src: phTechInterface,
+      alt: 'Placeholder illustration: an interface window with code lines connected to a system diagram',
     },
     tone: 'light',
   },

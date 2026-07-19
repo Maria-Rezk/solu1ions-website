@@ -3,7 +3,6 @@ import { gsap, EASE_OUT } from '../../lib/gsap';
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
 import { scrollToId } from '../../lib/scroll';
 import { SITE } from '../../data/site';
-import chromeFan from '../../assets/pattern-chrome.webp';
 
 interface HeroProps {
   /** True once the preloader has finished — starts the entrance timeline. */
@@ -11,13 +10,12 @@ interface HeroProps {
 }
 
 /**
- * Editorial hero. Three masked display lines with an inline media "chip"
- * (the chrome fan, slowly turning) — the kinetic-typography device the
- * Tajreed reference uses, rebuilt around the Solu1ions brand objects.
+ * Editorial hero. Three masked display lines with an inline media "chip" —
+ * the chrome Solu1ions 1T mark (the same treatment as the custom cursor) —
+ * the kinetic-typography device the Tajreed reference uses.
  */
 export function Hero({ ready }: HeroProps) {
   const rootRef = useRef<HTMLElement>(null);
-  const fanRef = useRef<HTMLImageElement>(null);
   const reduced = usePrefersReducedMotion();
 
   /* Entrance — plays once the preloader hands over. */
@@ -45,15 +43,12 @@ export function Hero({ ready }: HeroProps) {
     return () => ctx.revert();
   }, [ready, reduced]);
 
-  /* Ambient motion: the fan turns slowly; the display drifts on scroll. */
+  /* Ambient motion: the display drifts on scroll. */
   useLayoutEffect(() => {
     const root = rootRef.current;
     if (!root || reduced) return;
 
     const ctx = gsap.context(() => {
-      if (fanRef.current) {
-        gsap.to(fanRef.current, { rotation: 360, duration: 48, ease: 'none', repeat: -1 });
-      }
       gsap.to('.hero__display', {
         yPercent: -8,
         autoAlpha: 0.25,
@@ -76,15 +71,7 @@ export function Hero({ ready }: HeroProps) {
             <span className="hero__line">
               We build
               <span className="hero__chip" aria-hidden="true">
-                <img
-                  ref={fanRef}
-                  src={chromeFan}
-                  alt=""
-                  width="120"
-                  height="116"
-                  loading="eager"
-                  decoding="async"
-                />
+                <span className="hero__chip-mark" />
               </span>
             </span>
           </span>
