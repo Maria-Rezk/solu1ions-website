@@ -1,0 +1,53 @@
+.falling-pattern-physics {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  contain: layout paint;
+}
+
+.falling-pattern-physics__item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  height: auto;
+  pointer-events: none;
+  transform-origin: center;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.falling-pattern-physics__piece {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+.falling-pattern-physics.is-interactive {
+  pointer-events: auto;
+}
+
+.falling-pattern-physics.is-interactive .falling-pattern-physics__item {
+  cursor: crosshair;
+  pointer-events: auto;
+  touch-action: pan-y;
+}
+
+.falling-pattern-physics.is-settled .falling-pattern-physics__item,
+.falling-pattern-physics.is-reduced .falling-pattern-physics__item {
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .falling-pattern-physics__item {
+    transition: none;
+    will-change: auto;
+  }
+}

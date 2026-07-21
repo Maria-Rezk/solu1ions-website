@@ -3,7 +3,7 @@
 export interface NavItem {
   index: string;
   label: string;
-  href: `#${string}`;
+  href: string;
 }
 
 export interface SocialLink {
@@ -17,8 +17,6 @@ export interface ServiceCategory {
   title: [string, string];
   description: string;
   services: string[];
-  media: { src: string; alt: string; contain?: boolean; treatment?: 'cursor-mark' };
-  tone: 'dark' | 'light';
 }
 
 export interface Milestone {
@@ -44,14 +42,44 @@ export interface Project {
   media: { src: string; alt: string } | null;
 }
 
-export interface Testimonial {
-  quote: string;
+export interface TeamMember {
+  id: string;
   name: string;
-  role: string;
+  position: string;
+  /** How this person thinks about their work — never client feedback. */
+  vision: string;
+  /** Marks unapproved content so the card can flag itself. */
+  pending?: boolean;
+  /**
+   * Desktop scatter preset in drag-layer pixels, authored against a 400px
+   * reference card and scaled to the real card width at runtime.
+   */
+  initialX: number;
+  initialY: number;
+  initialRotation: number;
+  cardVariant?: 'feature' | 'compact';
 }
 
 export interface ValueItem {
   index: string;
   name: string;
   belief: string;
+}
+
+export interface Testimonial {
+  id: string;
+  name: string;
+  role: string;
+  company: string;
+  quote: string;
+  /** Optional portrait. When absent the card falls back to `initials`. */
+  avatar?: { src: string; alt: string };
+  initials?: string;
+  /**
+   * Desktop scatter preset, in drag-layer pixels. Tablet and mobile layouts
+   * are derived from these values — see components/sections/Testimonials.tsx.
+   */
+  initialX: number;
+  initialY: number;
+  initialRotation: number;
 }

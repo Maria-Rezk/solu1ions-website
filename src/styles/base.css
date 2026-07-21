@@ -31,6 +31,9 @@ body {
   font-family: var(--font-body);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
+  /* Only real cuts, never a synthesised bold or oblique. ADB Fixo
+     supplies 500/700 upright + italic; Inter Variable covers 100-900. */
+  font-synthesis: none;
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
 }
@@ -78,6 +81,19 @@ textarea {
   outline-offset: 3px;
 }
 
+/* Visually hidden, available to assistive tech. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Skip link */
 .skip-link {
   position: fixed;
@@ -89,6 +105,7 @@ textarea {
   color: var(--c-concrete);
   font-family: var(--font-display);
   font-size: var(--fs-small);
+  font-weight: 500;
   letter-spacing: 0.08em;
   transform: translateY(-200%);
   transition: transform var(--dur-fast) var(--ease-out);
@@ -100,7 +117,6 @@ textarea {
 /* ---- Typography roles ---- */
 .t-display {
   font-family: var(--font-display);
-  font-variation-settings: 'wdth' 118;
   font-weight: 700;
   line-height: var(--lh-display);
   letter-spacing: var(--ls-display);
@@ -109,8 +125,7 @@ textarea {
 
 .t-label {
   font-family: var(--font-display);
-  font-variation-settings: 'wdth' 110;
-  font-weight: 600;
+  font-weight: 700;
   font-size: var(--fs-label);
   letter-spacing: var(--ls-label);
   text-transform: uppercase;
@@ -187,15 +202,20 @@ textarea {
   gap: 0.75rem;
   padding: 1rem 1.9rem;
   font-family: var(--font-display);
-  font-variation-settings: 'wdth' 110;
-  font-weight: 600;
+  font-weight: 700;
   font-size: var(--fs-small);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   border: 1px solid currentColor;
   overflow: hidden;
-  transition: color var(--dur-fast) var(--ease-out);
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    transform 0.2s var(--ease-out);
   isolation: isolate;
+}
+
+.btn:active {
+  transform: scale(0.98);
 }
 .btn::after {
   content: '';
@@ -233,7 +253,7 @@ textarea {
   align-items: center;
   gap: 0.6rem;
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   font-size: var(--fs-small);
@@ -245,77 +265,84 @@ textarea {
   transform: translate(4px, -4px);
 }
 
-/* ---- Custom cursor ---- */
-.cursor-mark,
-.cursor-ring {
+/* ---- Frosted-glass cursor ---- */
+.cursor-glass {
   position: fixed;
   top: 0;
   left: 0;
   z-index: var(--z-cursor);
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-}
-
-.cursor-mark {
-  width: 50px;
-  height: 49px;
-  background:
-    linear-gradient(140deg, #ffffff 0%, #7f8992 34%, #f5f7f8 56%, #27303d 100%),
-    var(--c-concrete);
-  filter:
-    drop-shadow(0 1px 0 color-mix(in srgb, var(--c-concrete) 52%, transparent))
-    drop-shadow(0 10px 18px color-mix(in srgb, var(--c-vulcan) 72%, transparent));
-  -webkit-mask: url('../assets/brand/logo-icon.svg') center / contain no-repeat;
-  mask: url('../assets/brand/logo-icon.svg') center / contain no-repeat;
-  transform: translate(-50%, -50%) rotate(-4deg);
-  transform-origin: center;
-  transition:
-    opacity var(--dur-fast) var(--ease-out),
-    filter var(--dur-fast) var(--ease-out),
-    width var(--dur-fast) var(--ease-out),
-    height var(--dur-fast) var(--ease-out);
-}
-
-.cursor-mark.is-active {
-  width: 42px;
-  height: 41px;
-  filter:
-    drop-shadow(0 1px 0 color-mix(in srgb, var(--c-concrete) 56%, transparent))
-    drop-shadow(0 8px 16px color-mix(in srgb, var(--c-magenta) 42%, transparent));
-}
-
-.cursor-ring {
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  border: 0 solid transparent;
   display: grid;
-  place-items: center;
+  width: 34px;
+  height: 34px;
   overflow: hidden;
+  place-items: center;
+  pointer-events: none;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 50%;
+  outline: 1px solid rgba(43, 52, 79, 0.2);
+  outline-offset: -2px;
+  background:
+    radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.82) 0 5%, transparent 34%),
+    rgba(255, 255, 255, 0.16);
+  box-shadow:
+    inset 4px 4px 9px rgba(255, 255, 255, 0.34),
+    inset -5px -6px 11px rgba(43, 52, 79, 0.16),
+    0 5px 18px rgba(5, 8, 14, 0.16);
+  backdrop-filter: blur(5px) saturate(135%);
+  -webkit-backdrop-filter: blur(5px) saturate(135%);
+  transform: translate(-50%, -50%);
   transition:
-    width 0.3s var(--ease-out),
-    height 0.3s var(--ease-out),
-    background-color 0.3s var(--ease-out),
-    border-color 0.3s var(--ease-out);
+    width 0.28s var(--ease-out),
+    height 0.28s var(--ease-out),
+    background-color 0.28s var(--ease-out),
+    box-shadow 0.28s var(--ease-out);
 }
-.cursor-ring span {
+
+.cursor-glass::after {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  content: '';
+  background: var(--c-magenta);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.48);
+  transition: opacity 0.18s var(--ease-out);
+}
+
+.cursor-glass span {
+  position: relative;
+  z-index: 1;
+  color: #11151d;
   font-family: var(--font-display);
-  font-size: 0.6rem;
+  font-size: 0.52rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
   opacity: 0;
-  transition: opacity 0.2s;
+  text-transform: uppercase;
+  text-shadow: 0 1px 5px rgba(255, 255, 255, 0.85);
+  transition: opacity 0.18s var(--ease-out);
 }
-.cursor-ring.is-active {
-  width: 84px;
-  height: 84px;
-  border-width: 1px;
-  background: color-mix(in srgb, var(--c-magenta) 92%, transparent);
-  border-color: transparent;
+
+.cursor-glass.is-active {
+  width: 72px;
+  height: 72px;
+  background:
+    radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.82) 0 4%, transparent 31%),
+    rgba(255, 255, 255, 0.25);
+  box-shadow:
+    inset 7px 7px 15px rgba(255, 255, 255, 0.36),
+    inset -8px -9px 17px rgba(43, 52, 79, 0.18),
+    0 9px 28px rgba(5, 8, 14, 0.2);
 }
-.cursor-ring.is-active span {
+
+.cursor-glass.is-active::after {
+  opacity: 0;
+}
+
+.cursor-glass.is-active span {
   opacity: 1;
 }
+
 html.has-cursor,
 html.has-cursor a,
 html.has-cursor button,

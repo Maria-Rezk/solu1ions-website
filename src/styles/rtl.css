@@ -1,0 +1,63 @@
+/* ============================================================
+   ARABIC & RTL TYPOGRAPHY
+   Loaded last so these rules win cascade ties against the
+   Latin-tuned component styles they correct.
+
+   Verified against the actual font binaries:
+     · ADB Fixo Medium/Bold (upright) carry the Arabic block with
+       real shaping — 'arab' script, init/medi/fina/rlig/mark.
+     · ADB Fixo Medium/Bold *Italic* contain ZERO Arabic glyphs.
+     · Inter has no Arabic coverage at all.
+
+   So Arabic is always ADB Fixo, always upright, and never tracked:
+   letter-spacing severs the cursive joins that init/medi/fina build.
+   ============================================================ */
+
+:lang(ar) {
+  font-family: var(--font-arabic);
+  line-height: var(--lh-body-ar);
+}
+
+/* Applies to every descendant: a Latin-tuned component further down
+   the cascade must not re-introduce tracking, faux italics, or a
+   font stack that cannot render the script. */
+:root:lang(ar) *,
+:root :lang(ar) * {
+  font-family: var(--font-arabic);
+  /* Arabic is cursive — tracking breaks the joins. */
+  letter-spacing: 0;
+  /* No Arabic italic exists; forcing it would fall back and fake an oblique. */
+  font-style: normal;
+  /* Arabic is unicameral — casing has no effect and confuses screen readers. */
+  text-transform: none;
+  font-synthesis: none;
+}
+
+/* Numerals, latin fragments, and code inside Arabic copy stay in the
+   Latin faces — mark them explicitly with lang="en". */
+:lang(ar) :lang(en) {
+  font-family: var(--font-body);
+  letter-spacing: normal;
+}
+
+:lang(ar) .t-display,
+:lang(ar) .t-label {
+  font-family: var(--font-arabic);
+  line-height: 1.25; /* the display leading is far too tight for Arabic */
+}
+
+/* ---- Direction-driven (not language-driven) corrections ---- */
+
+/* The eyebrow rule is drawn before the label; it has to flip with the flow. */
+[dir='rtl'] .eyebrow::before {
+  transform: skewX(24deg);
+}
+
+/* Arrow glyphs point along the reading direction. */
+[dir='rtl'] .arrow-link .arrow {
+  transform: scaleX(-1);
+}
+
+[dir='rtl'] .arrow-link:hover .arrow {
+  transform: scaleX(-1) translate(4px, -4px);
+}

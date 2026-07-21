@@ -1,9 +1,11 @@
-import { useRef, type MouseEvent } from 'react';
+import { useLayoutEffect, useRef, type MouseEvent } from 'react';
 import { Magnetic } from '../motion/Magnetic';
 import { ParallaxMedia } from '../motion/ParallaxMedia';
 import { Logo } from './Logo';
-import { scrollToId } from '../../lib/scroll';
+import { navigateTo } from '../../lib/scroll';
 import { useCurvedReveal } from '../../hooks/useCurvedReveal';
+import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
+import { gsap, EASE_OUT } from '../../lib/gsap';
 import { NAV_ITEMS, SOCIALS, SITE } from '../../data/site';
 import { SERVICE_CATEGORIES } from '../../data/services';
 import glassMark from '../../assets/mark-glass.webp';
@@ -16,11 +18,30 @@ import glassMark from '../../assets/mark-glass.webp';
 export function Footer() {
   const year = new Date().getFullYear();
   const ref = useRef<HTMLElement>(null);
+  const reduced = usePrefersReducedMotion();
   useCurvedReveal(ref, { radius: 96 });
+
+  /* Progressive entrance: brand statement → link columns → legal row.
+     A single early once-trigger so nothing is ever gated behind long motion. */
+  useLayoutEffect(() => {
+    const root = ref.current;
+    if (!root || reduced) return;
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        defaults: { ease: EASE_OUT, autoAlpha: 0 },
+        scrollTrigger: { trigger: root, start: 'top 78%', once: true },
+      });
+      tl.from('.footer__brand', { y: 30, duration: 0.85 }, 0);
+      tl.from('.footer__col', { y: 24, duration: 0.75, stagger: 0.09 }, 0.18);
+      tl.from('.footer__bottom', { y: 16, duration: 0.65 }, 0.5);
+    }, root);
+    return () => ctx.revert();
+  }, [reduced]);
 
   const go = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    scrollToId(href);
+    navigateTo(href);
   };
 
   return (
@@ -92,7 +113,7 @@ export function Footer() {
           <button
             type="button"
             className="footer__top"
-            onClick={() => scrollToId('#home')}
+            onClick={() => navigateTo('#home')}
             aria-label="Back to top"
             data-cursor="Top"
           >

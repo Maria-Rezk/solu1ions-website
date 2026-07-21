@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, type MouseEvent } from 'react';
 import { gsap, EASE_INOUT, EASE_OUT } from '../../lib/gsap';
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
-import { scrollToId, getLenis } from '../../lib/scroll';
+import { navigateTo, getLenis } from '../../lib/scroll';
 import { Marquee } from '../motion/Marquee';
 import { NAV_ITEMS, SOCIALS, SITE } from '../../data/site';
 import pattern from '../../assets/pattern-chrome.webp';
@@ -104,7 +104,7 @@ export function FullscreenMenu({ open, onClose }: FullscreenMenuProps) {
     e.preventDefault();
     onClose();
     // Let the panel begin closing before the page moves.
-    window.setTimeout(() => scrollToId(href), reduced ? 0 : 250);
+    window.setTimeout(() => navigateTo(href), reduced ? 0 : 250);
   };
 
   return (

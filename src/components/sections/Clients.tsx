@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import { Marquee } from '../motion/Marquee';
+import { Reveal } from '../motion/Reveal';
 import { CLIENTS } from '../../data/clients';
 
 const HALF = Math.ceil(CLIENTS.length / 2);
@@ -27,12 +28,12 @@ function Row({ names }: { names: string[] }) {
 export function Clients() {
   return (
     <section className="clients" aria-label="Selected clients">
-      <div className="container clients__head">
+      <Reveal className="container clients__head" y={24}>
         <p className="eyebrow t-label">Selected clients</p>
         <p className="t-muted">
           Across hospitality, banking, luxury, beauty, consulting, and technology.
         </p>
-      </div>
+      </Reveal>
       <Marquee duration={38} ariaLabel={`Clients: ${ROW_A.join(', ')}`} className="clients__row">
         <Row names={ROW_A} />
       </Marquee>

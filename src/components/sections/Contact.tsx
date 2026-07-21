@@ -1,6 +1,8 @@
-import { useId, useState, type ChangeEvent, type FocusEvent, type FormEvent } from 'react';
+import { useId, useLayoutEffect, useRef, useState, type ChangeEvent, type FocusEvent, type FormEvent } from 'react';
 import { SplitLines } from '../motion/SplitLines';
 import { Reveal } from '../motion/Reveal';
+import { gsap, EASE_OUT } from '../../lib/gsap';
+import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
 import { SITE, SOCIALS } from '../../data/site';
 import { SERVICE_CATEGORIES } from '../../data/services';
 
@@ -67,10 +69,32 @@ function buildMailto(values: FormState): string {
  */
 export function Contact() {
   const uid = useId();
+  const rootRef = useRef<HTMLElement>(null);
+  const reduced = usePrefersReducedMotion();
   const [values, setValues] = useState<FormState>(INITIAL);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [touched, setTouched] = useState<Partial<Record<keyof FormState, boolean>>>({});
   const [status, setStatus] = useState<Status>('idle');
+
+  /* Form fields drop in with a restrained stagger the first time the grid
+     scrolls into view. Runs once at mount only, so later status re-renders
+     never re-hide content. */
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+    if (!root || reduced) return;
+
+    const ctx = gsap.context(() => {
+      gsap.from('.contact__form .field:not(.field--hp), .contact__actions', {
+        autoAlpha: 0,
+        y: 14,
+        duration: 0.6,
+        ease: EASE_OUT,
+        stagger: 0.045,
+        scrollTrigger: { trigger: '.contact__grid', start: 'top 78%', once: true },
+      });
+    }, root);
+    return () => ctx.revert();
+  }, [reduced]);
 
   const fieldId = (name: keyof FormState) => `${uid}-${name}`;
 
@@ -131,7 +155,7 @@ export function Contact() {
   const invalid = (name: keyof FormState) => Boolean(touched[name] && errors[name]);
 
   return (
-    <section id="contact" className="section contact" aria-labelledby="contact-heading">
+    <section ref={rootRef} id="contact" className="section contact" aria-labelledby="contact-heading">
       <div className="container">
         <div className="section-head">
           <p className="eyebrow t-label">Contact</p>

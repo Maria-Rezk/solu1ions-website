@@ -2,8 +2,16 @@
    ADB FIXO — primary brand display face.
    The licensed brand font, self-hosted per the brand owner's
    confirmation that the licence permits web embedding.
-   Subset to the weights the design uses (Medium 500, Bold 700,
-   each with its italic). Elements set at 600 resolve up to 700.
+   AVAILABLE (verified against the actual files):
+     500 upright · 700 upright — Latin, Latin-ext, Cyrillic, Arabic
+                                 (arab script with init/medi/fina/
+                                 rlig/mark shaping)
+     500 italic  · 700 italic  — Latin, Latin-ext, Cyrillic ONLY;
+                                 these files contain no Arabic glyphs.
+   NOT SUPPLIED: 400 Regular, 600 SemiBold, and any Arabic italic.
+   Never request a weight that is not declared here — the browser
+   would synthesise a fake bold. Ask the brand owner for the missing
+   cuts, add the file, and declare it below.
    ============================================================ */
 
 @font-face {

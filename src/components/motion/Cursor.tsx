@@ -3,13 +3,9 @@ import { gsap } from '../../lib/gsap';
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
 import { useIsTouch } from '../../hooks/useIsTouch';
 
-/**
- * Custom cursor: chrome Solu1ions mark + trailing labelled ring. Disabled on
- * touch devices and when the user prefers reduced motion.
- */
+/** Frosted-glass cursor, disabled for touch and reduced-motion users. */
 export function Cursor() {
-  const markRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
+  const cursorRef = useRef<HTMLDivElement>(null);
   const [label, setLabel] = useState('');
   const [active, setActive] = useState(false);
   const reduced = usePrefersReducedMotion();
@@ -23,37 +19,45 @@ export function Cursor() {
     }
     document.documentElement.classList.add('has-cursor');
 
-    const mark = markRef.current;
-    const ring = ringRef.current;
-    if (!mark || !ring) return;
+    const cursor = cursorRef.current;
+    if (!cursor) return;
 
-    gsap.set([mark, ring], { autoAlpha: 0 });
-    const markX = gsap.quickTo(mark, 'x', { duration: 0.1, ease: 'power2.out' });
-    const markY = gsap.quickTo(mark, 'y', { duration: 0.1, ease: 'power2.out' });
-    const ringX = gsap.quickTo(ring, 'x', { duration: 0.45, ease: 'power3.out' });
-    const ringY = gsap.quickTo(ring, 'y', { duration: 0.45, ease: 'power3.out' });
+    gsap.set(cursor, { autoAlpha: 0 });
+    const cursorX = gsap.quickTo(cursor, 'x', { duration: 0.16, ease: 'power3.out' });
+    const cursorY = gsap.quickTo(cursor, 'y', { duration: 0.16, ease: 'power3.out' });
 
     let shown = false;
     const onMove = (e: MouseEvent) => {
       if (!shown) {
         shown = true;
-        gsap.to([mark, ring], { autoAlpha: 1, duration: 0.3 });
+        gsap.to(cursor, { autoAlpha: 1, duration: 0.24 });
       }
-      markX(e.clientX);
-      markY(e.clientY);
-      ringX(e.clientX);
-      ringY(e.clientY);
+      cursorX(e.clientX);
+      cursorY(e.clientY);
     };
+
+    /* Sections may retitle their cursor while the pointer stays put — e.g. the
+       testimonial canvas swapping DRAG for DRAGGING — so watch the attribute
+       of whichever element is currently hovered. */
+    let hovered: HTMLElement | null = null;
+    const observer = new MutationObserver(() => {
+      if (hovered) setLabel(hovered.dataset.cursor ?? '');
+    });
 
     const onOver = (e: MouseEvent) => {
       const target = (e.target as HTMLElement).closest<HTMLElement>('[data-cursor]');
       if (target) {
+        hovered = target;
+        observer.disconnect();
+        observer.observe(target, { attributes: true, attributeFilter: ['data-cursor'] });
         setLabel(target.dataset.cursor ?? '');
         setActive(true);
       }
     };
     const onOut = (e: MouseEvent) => {
       if ((e.target as HTMLElement).closest('[data-cursor]')) {
+        hovered = null;
+        observer.disconnect();
         setActive(false);
       }
     };
@@ -62,6 +66,7 @@ export function Cursor() {
     document.addEventListener('mouseover', onOver);
     document.addEventListener('mouseout', onOut);
     return () => {
+      observer.disconnect();
       window.removeEventListener('mousemove', onMove);
       document.removeEventListener('mouseover', onOver);
       document.removeEventListener('mouseout', onOut);
@@ -72,11 +77,12 @@ export function Cursor() {
   if (!enabled) return null;
 
   return (
-    <>
-      <div ref={ringRef} className={`cursor-ring ${active ? 'is-active' : ''}`} aria-hidden="true">
-        <span>{label}</span>
-      </div>
-      <div ref={markRef} className={`cursor-mark ${active ? 'is-active' : ''}`} aria-hidden="true" />
-    </>
+    <div
+      ref={cursorRef}
+      className={`cursor-glass ${active ? 'is-active' : ''}`}
+      aria-hidden="true"
+    >
+      <span>{label}</span>
+    </div>
   );
 }

@@ -35,26 +35,29 @@ export function Hero({ ready }: HeroProps) {
     gsap.set(rest, { autoAlpha: 0, y: 22 });
     if (!ready) return;
 
+    /* Staged handover: eyebrow → masked headline → supporting copy →
+       actions → scroll cue. One confident sequence, no overlap chaos. */
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: EASE_OUT } });
-      tl.to(lines, { yPercent: 0, duration: 1.25, stagger: 0.12 }, 0.05);
-      tl.to(rest, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.08 }, 0.7);
+      tl.to('.hero .eyebrow', { autoAlpha: 1, y: 0, duration: 0.7 }, 0);
+      tl.to(lines, { yPercent: 0, duration: 1.25, stagger: 0.12 }, 0.15);
+      tl.to('.hero__sub', { autoAlpha: 1, y: 0, duration: 0.9 }, 0.85);
+      tl.to('.hero__meta', { autoAlpha: 1, y: 0, duration: 0.9 }, 1.02);
+      tl.to('.hero__scroll', { autoAlpha: 1, y: 0, duration: 0.8 }, 1.18);
     }, root);
     return () => ctx.revert();
   }, [ready, reduced]);
 
-  /* Ambient motion: the display drifts on scroll. */
+  /* Scroll depth: the display drifts away slowly while the foreground copy
+     leaves slightly faster — two layers, one scrubbed scroll range. */
   useLayoutEffect(() => {
     const root = rootRef.current;
     if (!root || reduced) return;
 
     const ctx = gsap.context(() => {
-      gsap.to('.hero__display', {
-        yPercent: -8,
-        autoAlpha: 0.25,
-        ease: 'none',
-        scrollTrigger: { trigger: root, start: 'top top', end: 'bottom top', scrub: true },
-      });
+      const scrub = { trigger: root, start: 'top top', end: 'bottom top', scrub: true } as const;
+      gsap.to('.hero__display', { yPercent: -8, autoAlpha: 0.25, ease: 'none', scrollTrigger: scrub });
+      gsap.to('.hero__foot', { yPercent: -26, autoAlpha: 0.1, ease: 'none', scrollTrigger: scrub });
     }, root);
     return () => ctx.revert();
   }, [reduced]);

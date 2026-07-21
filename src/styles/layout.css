@@ -28,6 +28,7 @@ html.is-loading body {
 
 .preloader__words {
   position: relative;
+  width: min(92vw, 52rem);
   height: 1.1em;
   overflow: hidden;
   font-size: clamp(2.2rem, 6.5vw, 5rem);
@@ -37,6 +38,7 @@ html.is-loading body {
   position: absolute;
   inset: 0;
   display: block;
+  text-align: center;
   will-change: transform;
 }
 
@@ -282,7 +284,7 @@ html.is-loading body {
   display: inline-block;
   margin-top: 0.5rem;
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 700;
   font-size: clamp(1.1rem, 2vw, 1.5rem);
   border-bottom: 1px solid var(--line-on-dark);
   padding-bottom: 0.3rem;
@@ -348,6 +350,11 @@ html.is-loading body {
 
 .marquee__track--reverse {
   animation-direction: reverse;
+}
+
+/* Off-screen marquees stop burning compositor time. */
+.marquee.is-offscreen .marquee__track {
+  animation-play-state: paused;
 }
 
 .marquee__group {

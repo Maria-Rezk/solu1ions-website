@@ -1,9 +1,9 @@
 import type { Milestone } from '../types';
-import phoenix from '../assets/statue-phoenix.webp';
-import resilience from '../assets/statue-resilience.webp';
-import goat from '../assets/statue-goat.webp';
-import eagle from '../assets/statue-eagle.webp';
-import storm from '../assets/statue-storm.webp';
+import phoenix from '../assets/statue-phoenix-cutout.webp';
+import resilience from '../assets/statue-resilience-cutout.webp';
+import goat from '../assets/statue-goat-cutout.webp';
+import eagle from '../assets/statue-eagle-cutout.webp';
+import storm from '../assets/statue-storm-cutout.webp';
 
 /**
  * "The Story Behind Each Year" — verbatim from the Solu1ions Brand

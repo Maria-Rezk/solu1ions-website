@@ -9,6 +9,7 @@ import { Navbar } from './components/layout/Navbar';
 import { FullscreenMenu } from './components/layout/FullscreenMenu';
 import { Footer } from './components/layout/Footer';
 import { Cursor } from './components/motion/Cursor';
+import { CaseStudiesPage } from './components/pages/CaseStudiesPage';
 
 import { Hero } from './components/sections/Hero';
 import { Ticker } from './components/sections/Ticker';
@@ -17,14 +18,23 @@ import { Services } from './components/sections/Services';
 import { Journey } from './components/sections/Journey';
 import { Work } from './components/sections/Work';
 import { Clients } from './components/sections/Clients';
-import { Approach } from './components/sections/Approach';
 import { Testimonials } from './components/sections/Testimonials';
+import { Team } from './components/sections/Team';
+import { DestinationSection } from './components/sections/DestinationSection';
 import { Contact } from './components/sections/Contact';
+import { scrollToId } from './lib/scroll';
+
+function normalizePath(path: string): string {
+  const clean = path.replace(/\/+$/, '');
+  return clean || '/';
+}
 
 export function App() {
   const [ready, setReady] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [path, setPath] = useState(() => normalizePath(window.location.pathname));
   const reduced = usePrefersReducedMotion();
+  const isCaseStudies = path === '/case-studies';
 
   /* Lenis smooth scrolling, driven by the GSAP ticker so ScrollTrigger and
      the scroll position never disagree. Skipped entirely for reduced motion —
@@ -57,6 +67,25 @@ export function App() {
     document.documentElement.classList.toggle('no-motion', reduced);
   }, [reduced]);
 
+  useEffect(() => {
+    const syncPath = () => setPath(normalizePath(window.location.pathname));
+    window.addEventListener('popstate', syncPath);
+    return () => window.removeEventListener('popstate', syncPath);
+  }, []);
+
+  useEffect(() => {
+    document.title = isCaseStudies
+      ? 'Case Studies — Solu1ions'
+      : 'Solu1ions — One partner. Every solution.';
+  }, [isCaseStudies]);
+
+  useEffect(() => {
+    if (isCaseStudies || !ready || !window.location.hash) return;
+
+    const timer = window.setTimeout(() => scrollToId(window.location.hash), 120);
+    return () => window.clearTimeout(timer);
+  }, [isCaseStudies, path, ready]);
+
   return (
     <>
       <a className="skip-link" href="#main">
@@ -70,16 +99,23 @@ export function App() {
       <FullscreenMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
 
       <main id="main">
-        <Hero ready={ready} />
-        <Ticker />
-        <Intro />
-        <Services />
-        <Journey />
-        <Work />
-        <Clients />
-        <Approach />
-        <Testimonials />
-        <Contact />
+        {isCaseStudies ? (
+          <CaseStudiesPage />
+        ) : (
+          <>
+            <Hero ready={ready} />
+            <Ticker />
+            <Intro />
+            <Services />
+            <Journey />
+            <Work />
+            <Clients />
+            <Testimonials />
+            <Team />
+            <DestinationSection />
+            <Contact />
+          </>
+        )}
       </main>
 
       <Footer />

@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, type MouseEvent } from 'react';
 import { gsap, ScrollTrigger, EASE_OUT } from '../../lib/gsap';
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
-import { scrollToId } from '../../lib/scroll';
+import { navigateTo } from '../../lib/scroll';
 import { Magnetic } from '../motion/Magnetic';
 import { Logo } from './Logo';
 
@@ -58,7 +58,7 @@ export function Navbar({ menuOpen, onMenuToggle, ready }: NavbarProps) {
 
   const handleAnchor = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    scrollToId('#home');
+    navigateTo('#home');
   };
 
   return (
@@ -75,7 +75,7 @@ export function Navbar({ menuOpen, onMenuToggle, ready }: NavbarProps) {
               className="btn btn--solid navbar__cta"
               onClick={(e) => {
                 e.preventDefault();
-                scrollToId('#contact');
+                navigateTo('#contact');
               }}
             >
               Start a project

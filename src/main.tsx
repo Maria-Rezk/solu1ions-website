@@ -11,6 +11,9 @@ import './styles/tokens.css';
 import './styles/base.css';
 import './styles/layout.css';
 import './styles/sections.css';
+/* Last — its Arabic/RTL corrections must win ties against the
+   Latin-tuned component rules above. */
+import './styles/rtl.css';
 
 import { App } from './App';
 

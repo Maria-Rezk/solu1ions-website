@@ -1,0 +1,130 @@
+.destination {
+  position: relative;
+  isolation: isolate;
+  min-height: clamp(640px, 100svh, 960px);
+  overflow: hidden;
+  background: #fff;
+  color: var(--ink-on-light);
+}
+
+.destination__lockup {
+  position: absolute;
+  z-index: 2;
+  top: 36%;
+  left: 50%;
+  width: min(92vw, 980px);
+  color: #050505;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.destination__tagline {
+  position: relative;
+  display: block;
+  width: min(54rem, 92vw);
+  height: 16rem;
+  margin: 0 auto;
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.destination__the {
+  position: absolute;
+  top: 48%;
+  left: 0;
+  font-size: 5rem;
+  font-weight: 500;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.destination__one {
+  position: absolute;
+  top: 0;
+  left: 17.5%;
+  width: auto;
+  height: 92%;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.destination__one-fold {
+  transform-box: fill-box;
+  transform-origin: 88% 14%;
+}
+
+.destination__rest {
+  position: absolute;
+  top: 26%;
+  left: 39%;
+  margin: 0;
+  font-size: 5rem;
+  line-height: 1.06;
+  text-align: left;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.no-motion .destination__the,
+.no-motion .destination__one,
+.no-motion .destination__rest,
+.no-js .destination__the,
+.no-js .destination__one,
+.no-js .destination__rest {
+  visibility: visible;
+  opacity: 1;
+}
+
+@media (max-width: 1023px) {
+  .destination__tagline {
+    width: min(44rem, 92vw);
+    height: 13.5rem;
+  }
+
+  .destination__the,
+  .destination__rest {
+    font-size: 4rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .destination {
+    min-height: 86svh;
+  }
+
+  .destination__lockup {
+    top: 33%;
+    width: 94vw;
+  }
+
+  .destination__tagline {
+    width: min(94vw, 25rem);
+    height: 10.5rem;
+  }
+
+  .destination__the,
+  .destination__rest {
+    font-size: 2.25rem;
+  }
+
+  .destination__one {
+    left: 17%;
+    height: 90%;
+  }
+
+  .destination__rest {
+    left: 39%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .destination__the,
+  .destination__one,
+  .destination__rest {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+  }
+}

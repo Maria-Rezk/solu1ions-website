@@ -1,0 +1,313 @@
+/* ============================================================
+   OUR TEAM — floating, draggable team canvas.
+   Every selector is scoped to .team / .team-canvas / .tm-* so
+   nothing leaks into other sections.
+   ============================================================ */
+
+.team {
+  position: relative;
+  overflow: hidden; /* the drag layer is wider than the viewport */
+  border-block: 1px solid var(--line-on-dark);
+  background: var(--c-vulcan);
+}
+
+.team__head {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(15rem, 0.8fr);
+  gap: 1.25rem clamp(2rem, 5vw, 6rem);
+  align-items: end;
+  margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+.team__eyebrow {
+  grid-column: 1 / -1;
+}
+
+.team__title {
+  max-width: 12ch;
+  font-size: var(--fs-h1);
+}
+
+.team__title-line {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.team__title-line > span {
+  display: inline-block;
+}
+
+.team__intro {
+  max-width: 40ch;
+  padding-bottom: 0.55rem;
+}
+
+.team__hint {
+  grid-column: 1 / -1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--ink-on-dark-muted);
+}
+
+.team__hint::after {
+  width: 3.5rem;
+  height: 1px;
+  background: currentcolor;
+  content: '';
+  opacity: 0.5;
+}
+
+/* ---- Canvas ---- */
+.team-canvas {
+  position: relative;
+  isolation: isolate;
+  height: clamp(520px, 66vh, 700px);
+  overflow: hidden;
+  cursor: grab;
+  touch-action: pan-y; /* vertical page scrolling always wins */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  mask-image: linear-gradient(90deg, transparent 0, #000 3%, #000 97%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 3%, #000 97%, transparent 100%);
+}
+
+.team-canvas.is-dragging {
+  cursor: grabbing;
+}
+
+.team-canvas:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -4px;
+}
+
+.team-drag-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+/* ---- Card ---- */
+.tm-card {
+  --tm-lift: 0px;
+  --tm-rot-k: 1;
+  --tm-scale: 1;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--tm-card-w, 400px);
+  transform: translate3d(var(--tm-x), calc(var(--tm-y) + var(--tm-lift)), 0)
+    rotate(calc(var(--tm-rot) * var(--tm-rot-k) * 1deg)) scale(var(--tm-scale));
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.tm-card__enter {
+  will-change: transform, opacity;
+}
+
+.tm-card__drift {
+  animation: tm-drift var(--tm-drift-dur, 6s) ease-in-out var(--tm-drift-delay, 0s) infinite
+    alternate;
+}
+
+@keyframes tm-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, var(--tm-drift-y, -4px), 0);
+  }
+}
+
+.team-canvas.is-dragging .tm-card__drift {
+  animation-play-state: paused;
+}
+
+/* ---- Card content ---- */
+.tm-card__surface {
+  display: grid;
+  gap: 1.5rem;
+  padding: clamp(1.5rem, 2vw, 2.25rem);
+  background: color-mix(in srgb, var(--c-navy) 82%, var(--c-vulcan));
+  border: 1px solid var(--line-on-dark);
+  border-radius: var(--radius-md);
+  box-shadow: 0 20px 48px rgba(5, 8, 14, 0.45);
+  transition:
+    box-shadow var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+
+.tm-card--compact .tm-card__surface {
+  gap: 1.25rem;
+  padding: clamp(1.35rem, 1.7vw, 1.9rem);
+}
+
+.tm-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.tm-card__index {
+  color: var(--ink-on-dark-muted);
+  opacity: 0.7;
+}
+
+.tm-card__flag {
+  padding: 0.3rem 0.55rem;
+  color: var(--ink-on-dark-muted);
+  border: 1px solid var(--line-on-dark);
+  border-radius: var(--radius-sm);
+  font-size: 0.6rem;
+}
+
+.tm-card__vision {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+.tm-card__mark {
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 0.72;
+}
+
+.tm-card__vision p {
+  color: var(--ink-on-dark);
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.tm-card--compact .tm-card__vision p {
+  font-size: clamp(1.05rem, 0.98rem + 0.35vw, 1.3rem);
+}
+
+.tm-card__details {
+  display: grid;
+  gap: 0.3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line-on-dark);
+}
+
+.tm-card__name {
+  font-size: clamp(1.15rem, 1.02rem + 0.38vw, 1.5rem);
+}
+
+.tm-card__position {
+  color: var(--accent);
+}
+
+/* ---- Hover / focus depth (pointer devices only) ---- */
+@media (hover: hover) and (pointer: fine) {
+  .tm-card:hover,
+  .tm-card:focus-within {
+    --tm-lift: -12px;
+    --tm-rot-k: 0.5;
+    --tm-scale: 1.018;
+
+    z-index: 30;
+  }
+
+  .tm-card:hover .tm-card__surface,
+  .tm-card:focus-within .tm-card__surface {
+    border-color: color-mix(in srgb, var(--c-bayoux) 70%, transparent);
+    box-shadow: 0 30px 66px rgba(5, 8, 14, 0.58);
+  }
+}
+
+/* ---- Keyboard-only navigation ---- */
+.tm-nav {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 40;
+  display: flex;
+  gap: 0.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s var(--ease-out);
+}
+
+.tm-nav:focus-within {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tm-nav__button {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  color: var(--ink-on-dark);
+  background: var(--c-vulcan);
+  border: 1px solid var(--line-on-dark);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.tm-nav__button svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 1.5;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1119px) {
+  .team-canvas {
+    height: clamp(480px, 62vh, 620px);
+  }
+}
+
+@media (max-width: 719px) {
+  .team-canvas {
+    height: clamp(300px, 42vh, 420px);
+
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+
+  .team__head {
+    grid-template-columns: 1fr;
+  }
+
+  .team__title {
+    max-width: none;
+  }
+
+  .tm-card__vision p,
+  .tm-card--compact .tm-card__vision p {
+    font-size: var(--fs-body);
+  }
+}
+
+/* ---- Reduced motion: stable, immediately visible composition ---- */
+@media (prefers-reduced-motion: reduce) {
+  .tm-card__drift {
+    animation: none;
+  }
+
+  .tm-card {
+    transition: none;
+  }
+}
+
+html.no-motion .tm-card__drift {
+  animation: none;
+}
+
+html.no-motion .tm-card {
+  transition: none;
+}

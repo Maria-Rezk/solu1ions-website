@@ -35,9 +35,15 @@
 
   /* ---- Typography ----
      Primary brand font is ADB Fixo (licensed, self-hosted — see
-     styles/fonts.css). Inter is the secondary/body face.          */
-  --font-display: 'ADB Fixo', 'Archivo', system-ui, sans-serif;
+     styles/fonts.css); it carries Latin, Cyrillic AND Arabic.
+     Inter is the secondary face for long/dense Latin copy — it has
+     no Arabic coverage, which is why Arabic falls back to ADB Fixo
+     through --font-arabic (see styles/rtl.css).                    */
+  --font-display: 'ADB Fixo', system-ui, sans-serif;
   --font-body: 'Inter Variable', 'Inter', system-ui, sans-serif;
+  /* Arabic is set in ADB Fixo upright at every level — Inter cannot
+     render it and the ADB Fixo italics ship no Arabic glyphs. */
+  --font-arabic: 'ADB Fixo', system-ui, sans-serif;
 
   /* Fluid type scale */
   --fs-hero: clamp(3rem, 1.2rem + 9.2vw, 9.5rem);        /* kinetic H1 */
@@ -53,6 +59,7 @@
   --lh-display: 0.96;
   --lh-tight: 1.1;
   --lh-body: 1.65;
+  --lh-body-ar: 1.9;      /* Arabic needs more leading than Latin */
   --ls-label: 0.18em;
   --ls-display: -0.015em;
 

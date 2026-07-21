@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 
 interface MarqueeProps {
   children: ReactNode;
@@ -12,11 +12,27 @@ interface MarqueeProps {
 /**
  * Infinite, seamless marquee. Content is duplicated (clone is aria-hidden)
  * and moved with a pure-CSS transform loop — no per-frame JS. The global
- * reduced-motion rule freezes it automatically.
+ * reduced-motion rule freezes it automatically, and the loop pauses while
+ * the marquee is outside the viewport.
  */
 export function Marquee({ children, duration = 24, reverse = false, className, ariaLabel }: MarqueeProps) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => el.classList.toggle('is-offscreen', !entry.isIntersecting),
+      { rootMargin: '80px 0px' },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div
+      ref={ref}
       className={`marquee ${className ?? ''}`}
       aria-label={ariaLabel}
       role={ariaLabel ? 'img' : undefined}

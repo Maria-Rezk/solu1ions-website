@@ -21,7 +21,7 @@ export const NAV_ITEMS: NavItem[] = [
   { index: '03', label: 'Services', href: '#services' },
   { index: '04', label: 'Journey', href: '#journey' },
   { index: '05', label: 'Work', href: '#work' },
-  { index: '06', label: 'Approach', href: '#approach' },
+  { index: '06', label: 'Case Studies', href: '/case-studies' },
   { index: '07', label: 'Contact', href: '#contact' },
 ];
 
